@@ -2,3 +2,5 @@ nimcache
 *.exe
 *.swp
 tnimgit2*
+nimgit2
+build
