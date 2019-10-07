@@ -9,7 +9,7 @@ skipDirs = @["tests"]
 
 # Dependencies
 
-requires "nimterop >= 0.2.0"
+requires "nimterop##134"
 
 var
   name = "nimgit2"
@@ -18,10 +18,19 @@ when gorgeEx("nimble path nimterop").exitCode == 0:
   import nimterop/docs
   task docs, "Generate docs":
     buildDocs(@[name & ".nim"], "build/htmldocs",
-              defines = @["git2Static"])
+              defines = @["git2Git", "git2Static"])
 else:
   task docs, "Do nothing": discard
 
-task test, "Run tests":
+task testDyn, "Dynamic":
+  exec "nim c -d:git2DL -d:git2SetVer=0.28.3 -r tests/t" & name & ".nim"
+
+task testStatic, "Static":
   exec "nim c -d:git2Git -d:git2Static -r tests/t" & name & ".nim"
+
+task test, "Run tests":
+  rmDir("build")
+  testDynTask()
+  rmDir("build")
+  testStaticTask()
   docsTask()
