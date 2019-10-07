@@ -16,11 +16,12 @@ var
 
 when gorgeEx("nimble path nimterop").exitCode == 0:
   import nimterop/docs
-  task docs, "Generate docs": buildDocs(@[name & ".nim"], "build/htmldocs")
+  task docs, "Generate docs":
+    buildDocs(@[name & ".nim"], "build/htmldocs",
+              defines = @["git2Static"])
 else:
   task docs, "Do nothing": discard
 
 task test, "Run tests":
-  exec "nim c -r tests/t" & name & ".nim"
-  exec "nim c -d:danger -r tests/t" & name & ".nim"
+  exec "nim c -d:git2Git -d:git2Static -r tests/t" & name & ".nim"
   docsTask()

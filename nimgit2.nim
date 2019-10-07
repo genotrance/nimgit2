@@ -44,5 +44,7 @@ cOverride:
 when git2Static:
   cImport(git2Path, recurse = true)
   {.passL: git2LPath.}
+  {.passL: "-lssl -lcrypto -lpthread -lz -lssh2 -lpcre".}
 else:
+  # Broken due to https://github.com/nimterop/nimterop/issues/134
   cImport(git2Path, recurse = true, dynlib = "git2LPath")
