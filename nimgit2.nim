@@ -2,16 +2,16 @@ import os, strutils
 
 import nimterop/[build, cimport]
 
-static:
-  cDebug()
-
 const
   baseDir = currentSourcePath.parentDir() / "build" / "libgit2"
   cmakeFlags = block:
     var
-      cm = "-DCMAKE_BUILD_TYPE=Release -DBUILD_CLAR=OFF"
+      cm = flagBuild("-D$#", @[
+        "CMAKE_BUILD_TYPE=Release", "BUILD_CLAR=OFF", "USE_BUNDLED_ZLIB=ON",
+        "USE_HTTP_PARSER=builtin", "REGEX_BACKEND=builtin"
+      ])
 
-    when defined(git2Static):
+    when isDefined(git2Static):
       cm &= " -DBUILD_SHARED_LIBS=OFF"
 
     cm
@@ -41,11 +41,11 @@ cOverride:
     git_iterator* = object
     git_note_iterator* = object
 
-when git2Static:
+when isDefined(git2Static):
   cImport(git2Path, recurse = true)
   {.passL: git2LPath.}
   when defined(linux):
-    {.passL: "-lssl -lcrypto -lpthread -lz -lssh2 -lpcre".}
+    {.passL: linkLibs(@["ssl", "crypto", "pthread", "ssh2"], staticLink = true).}
   elif defined(windows):
     # No libssh2 yet
     {.passL: "-lws2_32 -lwinhttp -lole32 -lcrypt32 -lRpcrt4".}
