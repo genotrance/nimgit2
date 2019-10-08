@@ -45,11 +45,7 @@ when isDefined(git2Static):
   cImport(git2Path, recurse = true)
   {.passL: git2LPath.}
   when defined(linux):
-    const
-      libs = linkLibs(@["ssl", "crypto", "ssh2"], staticLink = true)
-    static:
-      echo libs
-    {.passL: libs.}
+    {.passL: linkLibs(@["ssl", "crypto", "ssh2"], staticLink = true) & " -pthread".}
   elif defined(windows):
     # No libssh2 yet
     {.passL: "-lws2_32 -lwinhttp -lole32 -lcrypt32 -lRpcrt4".}
