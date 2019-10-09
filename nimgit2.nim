@@ -8,11 +8,14 @@ const
     var
       cm = flagBuild("-D$#", @[
         "CMAKE_BUILD_TYPE=Release", "BUILD_CLAR=OFF", "USE_BUNDLED_ZLIB=ON",
-        "USE_HTTP_PARSER=builtin", "REGEX_BACKEND=builtin"
+        "USE_HTTP_PARSER=builtin", "REGEX_BACKEND=builtin", "BUILD_CLAR=OFF"
       ])
 
     when isDefined(git2Static):
       cm &= " -DBUILD_SHARED_LIBS=OFF"
+
+    when defined(osx):
+      cm &= " -DOPENSSL_ROOT_DIR=/usr/local/opt/openssl"
 
     cm
 
@@ -25,11 +28,10 @@ getHeader(
 )
 
 cPlugin:
-  import
-    strutils, regex
+  import strutils
 
   proc onSymbol*(sym: var Symbol) {.exportc, dynlib.} =
-    sym.name = sym.name.strip(chars = {'_'}).replace(re"_[_]+", "_")
+    sym.name = sym.name.strip(chars = {'_'}).replace("__", "_")
 
 cDefine("GIT_DEPRECATE_HARD")
 
@@ -49,6 +51,8 @@ when isDefined(git2Static):
   elif defined(windows):
     # No libssh2 yet
     {.passL: "-lws2_32 -lwinhttp -lole32 -lcrypt32 -lRpcrt4".}
+  elif defined(osx):
+    {.passL: "-framework CoreFoundation -framework Security " &
+             "-L/usr/local/opt/openssl/lib -lssl -lcrypto -liconv".}
 else:
-  # Broken due to https://github.com/nimterop/nimterop/issues/134
   cImport(git2Path, recurse = true, dynlib = "git2LPath")
