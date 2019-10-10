@@ -13,6 +13,7 @@ requires "nimterop#head"
 
 var
   name = "nimgit2"
+  force = ""
 
 when gorgeEx("nimble path nimterop").exitCode == 0:
   import nimterop/docs
@@ -23,14 +24,13 @@ else:
   task docs, "Do nothing": discard
 
 task testDyn, "Dynamic":
-  exec "nim c -d:git2DL -d:git2SetVer=0.28.3 -r tests/t" & name & ".nim"
+  exec "nim c" & force & "-d:git2DL -d:git2SetVer=0.28.3 -r tests/t" & name & ".nim"
 
 task testStatic, "Static":
-  exec "nim c -d:git2Git -d:git2Static -r tests/t" & name & ".nim"
+  exec "nim c" & force & "-d:git2Git -d:git2Static -r tests/t" & name & ".nim"
 
 task test, "Run tests":
-  rmDir("build")
+  force = " -f "
   testDynTask()
-  rmDir("build")
   testStaticTask()
   docsTask()

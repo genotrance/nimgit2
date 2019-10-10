@@ -3,7 +3,12 @@ import os, strutils
 import nimterop/[build, cimport]
 
 const
-  baseDir = currentSourcePath.parentDir() / "build" / "libgit2"
+  mode  =
+    when isDefined(git2Static):
+      "Static"
+    else:
+      "Dyn"
+  baseDir = getProjectCacheDir("nimgit2" / "libgit2" & mode)
   cmakeFlags = block:
     var
       cm = flagBuild("-D$#", @[
