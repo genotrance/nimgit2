@@ -1,6 +1,6 @@
 # Package
 
-version       = "0.1.1"
+version       = "0.1.2"
 author        = "genotrance"
 description   = "libgit2 wrapper for Nim"
 license       = "MIT"
@@ -9,11 +9,11 @@ skipDirs = @["tests"]
 
 # Dependencies
 
-requires "nimterop >= 0.3.3"
+requires "nimterop >= 0.4.4"
 
 var
   name = "nimgit2"
-  force = ""
+  force = " "
 
 when gorgeEx("nimble path nimterop").exitCode == 0:
   import nimterop/docs
