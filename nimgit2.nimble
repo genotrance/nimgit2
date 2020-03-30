@@ -24,10 +24,10 @@ else:
   task docs, "Do nothing": discard
 
 task testDyn, "Dynamic":
-  exec "nim c" & force & "-d:git2DL -d:git2SetVer=0.28.3 -r tests/t" & name & ".nim"
+  exec "nim c" & force & "--path:.. -d:git2DL -d:git2SetVer=0.28.3 -r tests/t" & name & ".nim"
 
 task testStatic, "Static":
-  exec "nim c" & force & "-d:git2Git -d:git2Static -r tests/t" & name & ".nim"
+  exec "nim c" & force & "--path:.. -d:git2Git -d:git2Static -r tests/t" & name & ".nim"
 
 task test, "Run tests":
   force = " -f "
