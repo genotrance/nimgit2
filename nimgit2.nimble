@@ -1,6 +1,6 @@
 # Package
 
-version       = "0.1.2"
+version       = "0.2.0"
 author        = "genotrance"
 description   = "libgit2 wrapper for Nim"
 license       = "MIT"
@@ -9,7 +9,7 @@ skipDirs = @["tests"]
 
 # Dependencies
 
-requires "nimterop >= 0.4.4"
+requires "nimterop >= 0.5.6"
 
 var
   name = "nimgit2"
@@ -24,7 +24,7 @@ else:
   task docs, "Do nothing": discard
 
 task testDyn, "Dynamic":
-  exec "nim c" & force & "--path:.. -d:git2DL -d:git2SetVer=0.28.3 -r tests/t" & name & ".nim"
+  exec "nim c" & force & "--path:.. -d:git2DL -d:git2SetVer=1.0.0 -r tests/t" & name & ".nim"
 
 task testStatic, "Static":
   exec "nim c" & force & "--path:.. -d:git2Git -d:git2Static -r tests/t" & name & ".nim"

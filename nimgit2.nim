@@ -49,7 +49,7 @@ cOverride:
     git_note_iterator* = object
 
 when isDefined(git2Static):
-  cImport(git2Path, recurse = true)
+  cImport(git2Path, recurse = true, flags = "-f:ast2")
   {.passL: git2LPath.}
   when defined(linux):
     {.passL: linkLibs(@["ssl", "crypto", "ssh2"], staticLink = true) & " -pthread".}
@@ -60,4 +60,4 @@ when isDefined(git2Static):
     {.passL: "-framework CoreFoundation -framework Security " &
              "-L/usr/local/opt/openssl/lib -lssl -lcrypto -liconv".}
 else:
-  cImport(git2Path, recurse = true, dynlib = "git2LPath")
+  cImport(git2Path, recurse = true, dynlib = "git2LPath", flags = "-f:ast2")
