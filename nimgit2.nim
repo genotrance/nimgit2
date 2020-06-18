@@ -25,9 +25,11 @@ const
     cm
 
 getHeader(
-  "git2.h",
+  header = "git2.h",
   giturl = "https://github.com/libgit2/libgit2",
   dlurl = "https://github.com/libgit2/libgit2/archive/v$1.zip",
+  conanuri = "libgit2",
+  jbburi = "libgit2",
   outdir = baseDir,
   cmakeFlags = cmakeFlags
 )
@@ -50,14 +52,18 @@ cOverride:
 
 when isDefined(git2Static):
   cImport(git2Path, recurse = true, flags = "-f:ast2")
-  {.passL: git2LPath.}
-  when defined(linux):
-    {.passL: linkLibs(@["ssl", "crypto", "ssh2"], staticLink = true) & " -pthread".}
-  elif defined(windows):
-    # No libssh2 yet
-    {.passL: "-lws2_32 -lwinhttp -lole32 -lcrypt32 -lRpcrt4".}
-  elif defined(osx):
-    {.passL: "-framework CoreFoundation -framework Security " &
-             "-L/usr/local/opt/openssl/lib -lssl -lcrypto -liconv".}
+  when defined(Linux):
+    {.passL: "-lpthread".}
+
+  when not isDefined(git2Conan) and not isDefined(git2JBB):
+    {.passL: git2LPath.}
+    when defined(linux):
+      {.passL: linkLibs(@["ssl", "crypto", "ssh2"], staticLink = true).}
+    elif defined(windows):
+      # No libssh2 yet
+      {.passL: "-lws2_32 -lwinhttp -lole32 -lcrypt32 -lRpcrt4".}
+    elif defined(osx):
+      {.passL: "-framework CoreFoundation -framework Security " &
+               "-L/usr/local/opt/openssl/lib -lssl -lcrypto -liconv".}
 else:
   cImport(git2Path, recurse = true, dynlib = "git2LPath", flags = "-f:ast2")

@@ -1,5 +1,3 @@
-import os
-
 import nimgit2
 
 proc dumpError() =

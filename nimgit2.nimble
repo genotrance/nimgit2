@@ -12,25 +12,34 @@ skipDirs = @["tests"]
 requires "nimterop >= 0.5.6"
 
 var
-  name = "nimgit2"
-  force = " "
+  suffix = "--path:.. -r tests/tnimgit2.nim"
+  force = ""
 
 when gorgeEx("nimble path nimterop").exitCode == 0:
   import nimterop/docs
   task docs, "Generate docs":
-    buildDocs(@[name & ".nim"], "build/htmldocs",
-              defines = @["git2Git", "git2Static"])
+    buildDocs(@["nimgit2.nim"], "build/htmldocs",
+              defines = @["git2Conan", "git2SetVer=0.28.3", "git2Static"])
 else:
   task docs, "Do nothing": discard
 
 task testDyn, "Dynamic":
-  exec "nim c" & force & "--path:.. -d:git2DL -d:git2SetVer=1.0.0 -r tests/t" & name & ".nim"
+  exec "nim c " & force & " -d:git2DL -d:git2SetVer=1.0.0 " & suffix
 
 task testStatic, "Static":
-  exec "nim c" & force & "--path:.. -d:git2Git -d:git2Static -r tests/t" & name & ".nim"
+  exec "nim c " & force & " -d:git2Git -d:git2Static " & suffix
+
+task testJBB, "JBB":
+  exec "nim c " & force & " -d:git2JBB -d:git2SetVer=0.28.5 " & suffix
+
+task testConan, "Conan":
+  exec "nim c " & force & " -d:git2Conan -d:git2SetVer=0.28.3 " & suffix
+  exec "nim c " & force & " -d:git2Conan -d:git2SetVer=0.28.3 -d:git2Static " & suffix
 
 task test, "Run tests":
-  force = " -f "
+  force = "-f"
   testDynTask()
   testStaticTask()
+  testJBBTask()
+  testConanTask()
   docsTask()
