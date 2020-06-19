@@ -34,7 +34,9 @@ task testJBB, "JBB":
 
 task testConan, "Conan":
   exec "nim c " & force & " -d:git2Conan -d:git2SetVer=0.28.3 " & suffix
-  exec "nim c " & force & " -d:git2Conan -d:git2SetVer=0.28.3 -d:git2Static " & suffix
+  # Conan static .lib is not recognized on Windows
+  when not defined(Windows):
+    exec "nim c " & force & " -d:git2Conan -d:git2SetVer=0.28.3 -d:git2Static " & suffix
 
 task test, "Run tests":
   force = "-f"
