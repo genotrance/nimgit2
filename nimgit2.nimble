@@ -9,7 +9,7 @@ skipDirs = @["tests"]
 
 # Dependencies
 
-requires "nimterop >= 0.5.6"
+requires "nimterop >= 0.6.0"
 
 var
   suffix = "--path:.. -r tests/tnimgit2.nim"
