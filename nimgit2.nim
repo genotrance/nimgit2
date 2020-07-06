@@ -40,10 +40,16 @@ cPlugin:
   proc onSymbol*(sym: var Symbol) {.exportc, dynlib.} =
     sym.name = sym.name.strip(chars = {'_'}).replace("__", "_")
 
-cDefine("GIT_DEPRECATE_HARD")
+cIncludeDir(git2Path.parentDir())
 
 static:
-  cSkipSymbol(@["git_odb_write_pack", "GIT_DIFF_LINE_CONTEXT"])
+  cSkipSymbol(@[
+    "git_odb_write_pack", "GIT_DIFF_LINE_CONTEXT",
+    "git_blob_create_fromworkdir", "git_blob_create_fromdisk",
+    "git_blob_create_fromstream", "git_blob_create_fromstream_commit",
+    "git_blob_create_frombuffer", "git_index_add_frombuffer",
+    "git_oid_iszero", "git_tag_create_from_buffer"
+  ])
 
 cOverride:
   type
