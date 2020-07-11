@@ -22,7 +22,7 @@ import nimgit2
 doAssert git_libgit2_init() > 0, "Failed to init"
 ```
 
-Compile with `-d:git2Std` if libgit2 is already installed by your package manager. Use `-d:git2Git` or `-d:git2DL` if building from source or `-d:git2Conan` or `-d:git2JBB` if a pre-compiled binary is preferred. Check [Conan Center](https://conan.io/center) or [BinaryBuilder.org](https://github.com/JuliaBinaryWrappers/LibGit2_jll.jl/releases) for available pre-built versions.
+Compile with `-d:git2Std` if libgit2 is already installed by your package manager. Use `-d:git2Git` or `-d:git2DL` if building from source or `-d:git2Conan` or `-d:git2JBB` if a pre-compiled binary is preferred. Check [Conan Center](https://conan.io/center) or [Bintray](https://bintray.com/genotrance/binaries/LibGit2) for available pre-built versions. Note that Bintray only has shared builds of libgit2 and Conan's static builds on Windows do not work with gcc.
 
 To link a static build of libgit2, set `-d:git2Static`. The `-d:git2SetVer=xxx` can be used to set a specific tag or version. These defines can also be set in code using `setDefines()`. See the [nimterop](https://github.com/nimterop/nimterop) docs for more details.
 

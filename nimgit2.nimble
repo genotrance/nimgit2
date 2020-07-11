@@ -1,6 +1,6 @@
 # Package
 
-version       = "0.3.1"
+version       = "0.3.2"
 author        = "genotrance"
 description   = "libgit2 wrapper for Nim"
 license       = "MIT"
@@ -9,7 +9,7 @@ skipDirs = @["tests"]
 
 # Dependencies
 
-requires "nimterop >= 0.6.0"
+requires "nimterop >= 0.6.2"
 
 var
   suffix = "--path:.. -r tests/tnimgit2.nim"
@@ -31,6 +31,7 @@ task testStatic, "Static":
 
 task testJBB, "JBB":
   exec "nim c " & force & " -d:git2JBB -d:git2SetVer=0.28.5 " & suffix
+  exec "nim c " & force & " -d:git2JBB -d:git2SetVer=1.0.1 " & suffix
 
 task testConan, "Conan":
   exec "nim c " & force & " -d:git2Conan -d:git2SetVer=0.28.3 " & suffix

@@ -30,8 +30,9 @@ getHeader(
   dlurl = "https://github.com/libgit2/libgit2/archive/v$1.zip",
   conanuri = "libgit2",
   jbburi = "libgit2",
+  jbbFlags = "url=https://bintray.com/genotrance/binaries/download_file?file_path=LibGit2-v$1/",
   outdir = baseDir,
-  cmakeFlags = cmakeFlags
+  cmakeFlags = cmakeFlags,
 )
 
 cPlugin:
