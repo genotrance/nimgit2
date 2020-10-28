@@ -32,7 +32,7 @@ getHeader(
   jbburi = "libgit2",
   jbbFlags = "url=https://bintray.com/genotrance/binaries/download_file?file_path=LibGit2-v$1/",
   outdir = baseDir,
-  cmakeFlags = cmakeFlags,
+  cmakeFlags = cmakeFlags
 )
 
 cPlugin:
@@ -73,4 +73,4 @@ when isDefined(git2Static):
       {.passL: "-framework CoreFoundation -framework Security " &
                "-L/usr/local/opt/openssl/lib -lssl -lcrypto -liconv".}
 else:
-  cImport(git2Path, recurse = true, dynlib = "git2LPath", flags = "-f:ast2")
+  cImport(git2Path, recurse = true, dynlib = git2LPath)
